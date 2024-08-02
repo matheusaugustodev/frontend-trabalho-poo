@@ -20,10 +20,10 @@ export default function Home() {
 
   return (
     <>
-      <Tabs isFitted variant='enclosed' colorScheme='blue' index={tabIndex} onChange={handleTabsChange} mt='5'>
-        <TabList mb='1em'>
+      <Tabs isFitted variant='soft-rounded' colorScheme='blue' index={tabIndex} onChange={handleTabsChange} mt='5'>
+        <TabList mb='1em' paddingX='10'>
           <Tab>Usuário</Tab>
-          <Tab>Administrador</Tab>
+          <Tab>Vendedor</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>

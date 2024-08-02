@@ -1,13 +1,48 @@
-import { Card, CardHeader, CardBody, CardFooter, Stack, Heading, Text, Divider, ButtonGroup, Button, Image, Avatar } from '@chakra-ui/react'
+import { Card, CardHeader, CardBody, CardFooter, Stack, Heading, Text, Divider, ButtonGroup, Button, Image, Avatar, Accordion,
+    AccordionItem,
+    AccordionButton,
+    AccordionPanel,
+    AccordionIcon, 
+    Box,
+    Tag,
+    TagLabel} from '@chakra-ui/react'
 import { useContext } from 'react'
 import { GlobalContext } from '@/contexts/global'
-import AdminFuncionalidades from './admin_funcionalidades'
-import UserFuncionalidades from './user_funcionalidades'
+import Funcionalidades from './funcionalidades'
 
-export default function Livro({ nome, autor, preco, descricao }) {
+
+export default function Livro({ nome, autor, preco, quantidade, genero }) {
 
     const { tipoAcesso } = useContext(GlobalContext)
-    // tipoAcesso: admin ou user
+
+    const generos = [
+        {
+            nome: 'Ficção',
+            codigo: 'FICCAO'
+        },
+        {
+            nome: 'Terror',
+            codigo: 'TERROR'
+        },
+        {
+            nome: 'Biografia',
+            codigo: 'BIOGRAFIA'
+        },
+        {
+            nome: 'Infantil',
+            codigo: 'INFANTIL'
+        },
+        {
+            nome: 'Acadêmico',
+            codigo: 'ACADEMICO'
+        },
+        {
+            nome: 'Romance',
+            codigo: 'ROMANCE'
+        }
+    ]
+
+    const nomeGenero = generos.find(item => item.codigo == genero).nome
 
     const precoFormatado = preco.toLocaleString('pt-br', {
         minimumFractionDigits: 2,
@@ -15,34 +50,47 @@ export default function Livro({ nome, autor, preco, descricao }) {
         currency: 'BRL'
     })
 
-
     return (
-        <Card mb='5'>
-            <CardBody>
-                <Stack direction='row'>
-                    <Avatar name={nome} />
-                    <Stack spacing='0'>
-                        <Heading size='md'>{nome}</Heading>
-                        <Text>{autor}</Text>
+        <Accordion allowToggle border='1px' borderColor='blue.100' variant='soft-rounded' borderRadius='8px' overflow='auto'>
+            <AccordionItem border='hidden'>
+                <AccordionButton justifyContent='space-between' >
+                    <Stack direction='row' paddingY='1'>
+                        <Avatar name={nome} />
+                        <Stack spacing='0' textAlign='left'>
+                            <Heading size='md'>{nome}</Heading>
+                            <Text>{autor}</Text>
+                        </Stack>
                     </Stack>
-                </Stack>
-                <Stack mt='4' spacing='3'>
-                    <Text>{descricao}</Text>
-                    <Text color='blue.600' fontSize='2xl'>{precoFormatado}</Text>
-                </Stack>
-            </CardBody>
-            <Divider />
-            <CardFooter>
-                <ButtonGroup spacing='2'>
-                    {
-                        tipoAcesso === 'admin' ?
-                            <AdminFuncionalidades />
-                            :
-                            <UserFuncionalidades />
-                    }
-                    
-                </ButtonGroup>
-            </CardFooter>
-        </Card>
+                    <AccordionIcon />
+                </AccordionButton>
+                <AccordionPanel pb={4}>
+                    <Stack direction='row'>
+                        <Stack spacing='2' textAlign='left' mt='2'>
+                            <Stack direction='row' alignItems='center'>
+                                <Tag size='lg' colorScheme='gray' borderRadius='full'>
+                                    <TagLabel>Gênero:</TagLabel>
+                                </Tag>
+                                <Text>{nomeGenero}</Text>
+                            </Stack>
+                            <Stack direction='row' alignItems='center'>
+                                <Tag size='lg' colorScheme='gray' borderRadius='full'>
+                                    <TagLabel>Quantidade:</TagLabel>
+                                </Tag>
+                                <Text>{quantidade}</Text>
+                            </Stack>
+                            <Stack direction='row' alignItems='center'>
+                                <Tag size='lg' colorScheme='gray' borderRadius='full'>
+                                    <TagLabel>Preço:</TagLabel>
+                                </Tag>
+                                <Text>{precoFormatado}</Text>
+                            </Stack>
+                            <Funcionalidades />
+                        </Stack>
+                    </Stack>
+                </AccordionPanel>
+            </AccordionItem>
+
+        </Accordion>
+
     )
 }
