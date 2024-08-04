@@ -1,11 +1,11 @@
 'use client'
-import Livros from "@/components/livros"
 import { Button, Stack, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react"
 import { useState, useContext } from "react"
 import { GlobalContext } from "@/contexts/global"
+import Lista from "./components/padrao/lista"
 
 export default function Home() {
-  const { tipoAcesso, setTipoAcesso } = useContext(GlobalContext)
+  const { tipoAcesso, setTipoAcesso, dados } = useContext(GlobalContext)
 
   const [tabIndex, setTabIndex] = useState(0)
 
@@ -15,26 +15,37 @@ export default function Home() {
 
   const handleTabsChange = (index) => {
     setTabIndex(index)
-    setTipoAcesso(index === 0 ? 'user' : 'admin')
+    setTipoAcesso(index === 0 ? 'estoque' : index === 1 ? 'cliente' : 'vendedor')
+  }
+
+  const listaDados = []
+
+  for (const dado in dados) {
+    listaDados.push({
+      nome: dados[dado].nome,
+      tipoItem: dado,
+      propriedades: dados[dado].propriedades
+    })
   }
 
   return (
     <>
       <Tabs isFitted variant='soft-rounded' colorScheme='blue' index={tabIndex} onChange={handleTabsChange} mt='5'>
         <TabList mb='1em' paddingX='10'>
-          <Tab>Usuário</Tab>
-          <Tab>Vendedor</Tab>
+          {
+            listaDados.map((dado, index) => (
+              <Tab key={index}>{dado.nome}</Tab>
+            ))
+          }
         </TabList>
         <TabPanels>
-          <TabPanel>
-            <Livros />
-          </TabPanel>
-          <TabPanel>
-            <Stack textAlign='center' mb='5'>
-              <Button variant='solid' colorScheme='blue' w='100%'>Adicionar Livro</Button>
-            </Stack>
-            <Livros />
-          </TabPanel>
+          {
+            listaDados.map((dado, index) => (
+              <TabPanel key={index}>
+                <Lista tipoItem={dado.tipoItem} key={index}/>
+              </TabPanel>
+            ))
+          }
         </TabPanels>
       </Tabs>
     </>

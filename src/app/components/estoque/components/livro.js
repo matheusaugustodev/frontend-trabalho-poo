@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react'
 import Funcionalidades from './funcionalidades'
 
-export default function Livro({ nome, autor, preco, quantidade, genero }) {
+export default function Livro({ titulo, autor, preco, quantidade, genero }) {
 
     const generos = [
         {
@@ -52,9 +52,9 @@ export default function Livro({ nome, autor, preco, quantidade, genero }) {
                 <AccordionItem border='hidden'>
                     <AccordionButton justifyContent='space-between' >
                         <Stack direction='row' paddingY='1'>
-                            <Avatar name={nome} />
+                            <Avatar name={titulo} />
                             <Stack spacing='0' textAlign='left'>
-                                <Heading size='md'>{nome}</Heading>
+                                <Heading size='md'>{titulo}</Heading>
                                 <Text>{autor}</Text>
                             </Stack>
                         </Stack>
