@@ -2,7 +2,7 @@
 import { Button, Stack, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react"
 import { useState, useContext } from "react"
 import { GlobalContext } from "@/contexts/global"
-import Lista from "./components/padrao/lista"
+import Lista from "@/components/padrao/lista"
 
 export default function Home() {
   const { tipoAcesso, setTipoAcesso, dados } = useContext(GlobalContext)
