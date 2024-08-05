@@ -2,38 +2,35 @@ import { ButtonGroup, Button, useToast } from '@chakra-ui/react'
 import { useContext } from 'react'
 import { GlobalContext } from '@/contexts/global'
 
-export default function Funcionalidades({ tipoItem, item }) {
+export default function Funcionalidades({ tipoItem, id }) {
 
     const { dados, rotas, servidor } = useContext(GlobalContext)
 
     const nomeItem = dados[tipoItem].tipoItem
 
     const toast = useToast()
-
     
     async function removerItem() {
         
         const examplePromise = new Promise(async (resolve, reject) => {
-            return setTimeout(() => resolve(200), 5000)
+            // return setTimeout(() => resolve(200), 5000)
             
             const informacoesRotaParaRemoverItem = rotas[tipoItem].remover
-            const id = informacoesRotaParaRemoverItem.id
+            const campoUsadoParaRemover = informacoesRotaParaRemoverItem.id
 
-            const rota = servidor + informacoesRotaParaRemoverItem.rota
+            const rota = `${servidor + informacoesRotaParaRemoverItem.rota}?${campoUsadoParaRemover}=${id}`
             const metodo = informacoesRotaParaRemoverItem.tipo
 
-            const response = await fetch(rota, {
-                method: metodo,
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ [id]: item[id] })
-            })
+            const response = await fetch(rota, {method: metodo})
     
             const data = await response.json()
-            console.log(data)
 
-            response.status === 200 ? resolve(response.status) : reject(response.status)
+            if (response.status === 200) {
+                window.location.reload()
+                resolve(response.status)
+            } else {
+                reject(response.status)
+            }
         })
 
         const nomeItemFormatado = nomeItem[0].toUpperCase() + nomeItem.slice(1)
@@ -44,6 +41,8 @@ export default function Funcionalidades({ tipoItem, item }) {
             loading: { title: `Removendo ${nomeItem}...` },
         })
            
+        // atualizar pagina
+
     }
 
     return (

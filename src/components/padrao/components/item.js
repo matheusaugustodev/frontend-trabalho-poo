@@ -13,7 +13,7 @@ import { GlobalContext } from '@/contexts/global'
 
 export default function Item({ item, tipoItem }) {
 
-    const { dados } = useContext(GlobalContext)
+    const { dados, rotas } = useContext(GlobalContext)
 
     const propriedadePrincipal = dados[tipoItem].propriedadePrincipal
     const valorPropriedadePrincipal = item[propriedadePrincipal]
@@ -21,19 +21,35 @@ export default function Item({ item, tipoItem }) {
     const propriedades = dados[tipoItem].propriedades
 
     const listaPropriedades = []
+    
+    const campoUsadoParaRemover = rotas[tipoItem].remover.id
+    const valorCampoUsadoParaRemover = item[campoUsadoParaRemover]
 
     for (const propriedade of propriedades) {
 
         if (propriedade.codigo === propriedadePrincipal) continue
 
-        const nomePropriedade = [...propriedades].find(item => item.codigo === propriedade.codigo).nome
+        const objetoParaAdicionar = {}
 
-        const objetoParaAdicionar = {
-            nome: nomePropriedade,
-            valor: item[propriedade.codigo]
+        if (propriedade.subPropriedades) {
+            for (const subPropriedade of propriedade.subPropriedades) {
+                const nomeSubPropriedade = subPropriedade.nome
+                const valorSubPropriedade = item[propriedade.codigo][subPropriedade.codigo]
+
+                objetoParaAdicionar.nome = nomeSubPropriedade
+                objetoParaAdicionar.valor = valorSubPropriedade
+            }
+        } else {
+
+            const nomePropriedade = [...propriedades].find(item => item.codigo === propriedade.codigo).nome
+
+            objetoParaAdicionar.nome = nomePropriedade
+            objetoParaAdicionar.valor = item[propriedade.codigo]
         }
 
-        if (propriedade.codigo === 'preco') {
+        objetoParaAdicionar.id = valorCampoUsadoParaRemover
+
+        if (['salario', 'preco'].includes(propriedade.codigo)) {
             const precoFormatado = objetoParaAdicionar.valor.toLocaleString('pt-br', {
                 minimumFractionDigits: 2,
                 style: 'currency',
@@ -71,7 +87,7 @@ export default function Item({ item, tipoItem }) {
                                         </Stack>
                                     ))
                                 }
-                                <Funcionalidades tipoItem={tipoItem} item={item} />
+                                <Funcionalidades tipoItem={tipoItem} item={item} id={valorCampoUsadoParaRemover} />
                             </Stack>
                         </Stack>
                     </AccordionPanel>

@@ -9,17 +9,25 @@ import { GlobalContext } from '@/contexts/global'
 export default function Lista({ tipoItem }) {
 
     const [listaDeItens, setListaLivros] = useState([])
-    const { dados, tipoAcesso, livros, clientes, vendedores } = useContext(GlobalContext)
+    const { dados, servidor, rotas } = useContext(GlobalContext)
 
     useEffect(() => {
-        async function getLivros() {
-            // const response = await fetch(contexto.rotas.getLivros)
-            // const data = await response.json()
-            // console.log(data)
-            const data = tipoItem === 'estoque' ? livros : tipoItem === 'cliente' ? clientes : vendedores
-            setListaLivros(data)
+        async function getItens() {
+
+            const informacoesRota = rotas[tipoItem].lista
+            const rota = servidor + informacoesRota.rota
+
+            const response = await fetch(rota)
+
+            if (response.status === 200) {
+                const data = await response.json()
+                setListaLivros(data)                
+            } else {
+                console.error('Erro ao buscar itens')
+            }
+
         }
-        getLivros()
+        getItens()
     }, [])
 
     return (

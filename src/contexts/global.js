@@ -4,43 +4,12 @@ import { createContext, useState } from 'react'
 export const GlobalContext = createContext({});
 
 function GlobalProvider({ children }) {
-    const [tipoAcesso, setTipoAcesso] = useState('estoque')
-    const servidor = 'http://localhost:8080'
+    const servidor = 'http://127.0.0.1:8080'
     
-    const generos = [
-        {
-            nome: 'Ficção',
-            codigo: 'FICCAO'
-        },
-        {
-            nome: 'Terror',
-            codigo: 'TERROR'
-        },
-        {
-            nome: 'Biografia',
-            codigo: 'BIOGRAFIA'
-        },
-        {
-            nome: 'Infantil',
-            codigo: 'INFANTIL'
-        },
-        {
-            nome: 'Acadêmico',
-            codigo: 'ACADEMICO'
-        },
-        {
-            nome: 'Romance',
-            codigo: 'ROMANCE'
-        }
-    ]
-
-    generos.sort((a, b) => a.nome.localeCompare(b.nome))
-
     const dados = {
         estoque: {
             nome: 'Estoque de livros',
             tipoItem: 'livro',
-            // propriedades: ['titulo', 'autor', 'preco', 'quantidade', 'genero'],
             propriedades: [
                 {
                     nome: 'Título',
@@ -48,7 +17,13 @@ function GlobalProvider({ children }) {
                 },
                 {
                     nome: 'Autor',
-                    codigo: 'autor'
+                    codigo: 'autor',
+                    subPropriedades: [
+                        {
+                            nome: 'Nome',
+                            codigo: 'nome'
+                        }
+                    ]
                 },
                 {
                     nome: 'Preço',
@@ -57,10 +32,6 @@ function GlobalProvider({ children }) {
                 {
                     nome: 'Quantidade',
                     codigo: 'quantidade'
-                },
-                {
-                    nome: 'Gênero',
-                    codigo: 'genero'
                 }
             ],
             propriedadePrincipal: 'titulo',
@@ -80,6 +51,10 @@ function GlobalProvider({ children }) {
                 {
                     nome: 'Telefone',
                     codigo: 'telefone'
+                },
+                {
+                    nome: 'Endereço',
+                    codigo: 'endereco'
                 }
             ],
             propriedadePrincipal: 'nome',
@@ -99,6 +74,10 @@ function GlobalProvider({ children }) {
                 {
                     nome: 'Telefone',
                     codigo: 'telefone'
+                },
+                {
+                    nome: 'Salário',
+                    codigo: 'salario'
                 }
             ],
             propriedadePrincipal: 'nome',
@@ -161,15 +140,13 @@ function GlobalProvider({ children }) {
             titulo: 'É Assim Que Acaba',
             autor: 'Colleen Hoover',
             preco: 39.90,
-            quantidade: 1,
-            genero: generos[5].codigo
+            quantidade: 1
         },
         {
             titulo: 'A Barraca do Beijo',
             autor: 'Beth Reekles',
             preco: 29.90,
-            quantidade: 2,
-            genero: generos[5].codigo
+            quantidade: 2
         }
     ]
 
@@ -178,6 +155,7 @@ function GlobalProvider({ children }) {
             nome: 'Maria',
             cpf: '123.456.789-10',
             telefone: '(62) 9 9999-9999',
+            endereco: 'Rua 1, nº 1'
         }
     ]
 
@@ -186,11 +164,12 @@ function GlobalProvider({ children }) {
             nome: 'João',
             cpf: '123.456.789-11',
             telefone: '(62) 9 9999-9998',
+            salario: 2000.00
         }
     ]
 
     return (
-        <GlobalContext.Provider value={{ tipoAcesso, setTipoAcesso, rotas, livros, clientes, vendedores, dados, generos }}>
+        <GlobalContext.Provider value={{ rotas, livros, clientes, vendedores, dados, servidor }}>
             {children}
         </GlobalContext.Provider>
     )

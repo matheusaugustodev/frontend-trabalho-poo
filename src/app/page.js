@@ -5,7 +5,7 @@ import { GlobalContext } from "@/contexts/global"
 import Lista from "@/components/padrao/lista"
 
 export default function Home() {
-  const { tipoAcesso, setTipoAcesso, dados } = useContext(GlobalContext)
+  const { dados } = useContext(GlobalContext)
 
   const [tabIndex, setTabIndex] = useState(0)
 
@@ -15,7 +15,6 @@ export default function Home() {
 
   const handleTabsChange = (index) => {
     setTabIndex(index)
-    setTipoAcesso(index === 0 ? 'estoque' : index === 1 ? 'cliente' : 'vendedor')
   }
 
   const listaDados = []
